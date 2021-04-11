@@ -38,21 +38,15 @@ basic.showLeds(`
 let verifie_heure = input.runningTime()
 Y = 2
 X = 2
-let kill_pixel_every = randint(3000, 7000)
+let kill_pixel_every = randint(4000, 12000)
 basic.forever(function () {
-    led.plot(X, Y)
-})
-basic.forever(function () {
-    control.waitMicros(5000000)
-    while (true) {
-        control.waitMicros(randint(1000000, 80000000))
-        led.unplot(randint(0, 4), randint(0, 4))
-    }
-})
-control.inBackground(function () {
-    if (verifie_heure + kill_pixel_every > input.runningTime()) {
-        led.unplot(randint(0, 4), randint(0, 4))
+    if (verifie_heure + kill_pixel_every < input.runningTime()) {
+        led.toggle(randint(0, 4), randint(0, 4))
+        music.playTone(330, music.beat(BeatFraction.Whole))
         verifie_heure = input.runningTime()
         kill_pixel_every = randint(3000, 7000)
     }
+})
+basic.forever(function () {
+    led.plot(X, Y)
 })
